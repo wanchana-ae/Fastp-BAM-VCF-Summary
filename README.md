@@ -4,7 +4,7 @@ This repository contains scripts to generate quality control (QC) and mapping st
 
 ## Contents
 
-### 1 . `extract_fastp_summary_v3.py`
+### 1. `extract_fastp_summary_v3.py`
 
 - A Python script to summarize the QC results from fastp JSON output (*_fastp.json) for multiple samples.
 
@@ -48,6 +48,39 @@ Make sure to update the paths inside the script:
 - `INFO_FILE` : path to the list of BAM files
 - `OUT_count` : output directory
 - `Number_CPU` and Parallel_Sample for parallelization
+
+### 3. `genotype_summary.sh`
+
+**VCF 1/1 Genotype Summary Script**
+This script summarizes the number of homozygous alternate (`1/1` or `1|1`) genotypes for both **SNPs** and **INDELs** in a compressed VCF file (`.vcf.gz`).
+
+### 📁 File
+
+`genotype_summary.sh`
+
+### ⚙️ Requirements
+
+- `bcftools`
+- `awk`
+- A valid `.vcf.gz` file (with or without `.tbi` index)
+
+### 🧩 Usage
+
+Change input file name VCF.gz
+
+```bash
+VCF_FILE="FF68_CN_170ea.vcf.gz"
+```
+
+Save and Run
+
+```bash
+# Make the script executable
+chmod +x genotype_summary.sh
+
+# Run the script
+./genotype_summary.sh
+```
 
 #### Requirements
 
