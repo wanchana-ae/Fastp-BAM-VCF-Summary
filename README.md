@@ -82,6 +82,39 @@ chmod +x genotype_summary.sh
 ./genotype_summary.sh
 ```
 
+🧠 What it does
+
+1. Checks if the VCF index (.tbi) exists. If not, creates it automatically.
+
+2. Extracts all sample names from the VCF.
+
+3. Counts the number of homozygous alternate genotypes (1/1 or 1|1) separately for:
+
+    - SNPs (length(REF)==1 && length(ALT)==1)
+
+    - INDELs (other cases)
+
+4. Saves the summary to genotype_summary.tsv in tab-separated format:
+
+|Sample|SNP_1/1|INDEL_1/1|
+|:-------|:-----:|:-----------:|
+|SampleA|1532|213|
+|SampleB| 1450|192|
+
+🧾 Example output
+
+```bash
+Sample  SNP_1/1 INDEL_1/1
+FF68_01  1532    210
+FF68_02  1498    198
+```
+
+🧩 Notes
+
+- Supports both unindexed and indexed `.vcf.gz` files.
+- Works with multi-sample VCF files.
+- Requires minimal system resources.
+
 #### Requirements
 
 - Bash >= 4.0
