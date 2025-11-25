@@ -122,3 +122,82 @@ FF68_02  1498    198
 - Samtools
 - Python 3.8+
 - pandas library (pip install pandas)
+
+### 4. `SNP Density Pipeline`
+
+This is a simple two-step pipeline for calculating and visualizing SNP density across a genome using VCF files and R-based plotting.
+The workflow includes:
+
+**1. Calculating SNP density using vcftools**  
+**2. Plotting SNP density along each chromosome**  
+
+#### 🔧 1. SNPdensity.sh — SNP Density Calculation
+
+This script uses vcftools to compute SNP density in fixed-size windows (default: 1 Mb).
+It then converts the output into a BED-like file for downstream visualization.
+
+`Usage`
+
+```bash
+chmod +x SNPdensity.sh
+./SNPdensity.sh input.vcf.gz
+```
+
+- $1: Input gzipped VCF file
+
+**Workflow Overview**  
+Based on the uploaded script:
+
+- Loads the vcftools module
+
+- Runs SNP density calculation using:  
+
+```bash
+vcftools --SNPdensity 1000000
+```
+
+change this if you need other window size.  
+
+- Converts the .snpden output into a 5-column BED file:
+
+```bash
+cat snp_index_SNPdensity.snpden | \
+grep -v "CHROM" | awk '{print "Chr"$1"\t"$2"\t"$2+1000000"\t"".""\t"$3}' > snp_index_SNPdensity.bed
+```
+
+*change 1000000 to same number with `vcftools --SNPdensity`
+
+**Generated Output Files**  
+`*.snpden — Raw SNP density from vcftools`  
+`*.bed — BED-style file used for plotting SNP density`  
+
+#### 🎨 2. Plot_SNPdensity.R — Visualization of SNP Density
+
+This R script generates a chromosome-by-chromosome heatmap showing SNP density across the genome.
+
+**Run on R and Rstudio**  
+
+```bash  
+Plot_SNPdensity.R 
+```
+
+**Plot Features**  
+
+- Faceted heatmap (one panel per chromosome)
+- SNP density represented as color intensity
+- X-axis labeled in Mb
+- Custom gradient color scheme using RColorBrewer
+
+**Dependencies**  
+
+```bash  
+library(ggplot2)  
+library(scales)  
+library(RColorBrewer)  
+```
+
+📌 **Requirements Software**  
+
+- vcftools
+- bgzip and tabix (recommended for VCF handling)  
+- R (>= 4.0)
